@@ -1,0 +1,682 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Devine mon secret ! | Version téléphone</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#eaf3ff;
+  --bg2:#fff4de;
+  --card:rgba(255,255,255,.86);
+  --card-strong:#ffffff;
+  --line:rgba(76,101,141,.16);
+  --text:#24354d;
+  --muted:#617187;
+  --accent:#6186ff;
+  --accent-2:#88a4ff;
+  --good:#1d8a65;
+  --bubble-me:#dbe7ff;
+  --bubble-bot:#ffffff;
+  --phone-shell:#171923;
+  --phone-top:#ffffffd8;
+  --wallpaper:
+    radial-gradient(circle at 18% 15%, rgba(255,255,255,.65) 0 10%, transparent 11%),
+    radial-gradient(circle at 80% 26%, rgba(255,255,255,.46) 0 8%, transparent 9%),
+    linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.06));
+  --shadow:0 24px 60px rgba(35,53,86,.14);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  overflow:hidden;
+  font-family:"Trebuchet MS","Avenir Next","Segoe UI",ui-rounded,system-ui,sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at top left, rgba(255,255,255,.55), transparent 30%),
+    radial-gradient(circle at bottom right, rgba(255,255,255,.45), transparent 28%),
+    linear-gradient(135deg,var(--bg),var(--bg2));
+}
+button,input,select{font:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.55;cursor:not-allowed}
+.page{height:100vh;height:100dvh;padding:16px;display:grid;grid-template-rows:auto 1fr;gap:12px;max-width:1480px;margin:0 auto}
+.header{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.brand small{display:block;text-transform:uppercase;letter-spacing:.18em;font-weight:800;font-size:11px;color:var(--accent)}
+.brand h1{margin:4px 0 3px;font-size:clamp(24px,3vw,36px);letter-spacing:-.04em;font-family:"Baloo 2","Trebuchet MS",ui-rounded,sans-serif;font-weight:800}
+.brand p{margin:0;color:var(--muted);font-size:13px;line-height:1.35;font-family:"Nunito","Trebuchet MS",sans-serif}
+.pill{padding:10px 14px;border-radius:999px;background:rgba(255,255,255,.8);border:1px solid var(--line);font-weight:800;color:var(--muted);box-shadow:0 10px 24px rgba(0,0,0,.04);font-family:"Nunito","Trebuchet MS",sans-serif}
+.grid{min-height:0;display:grid;grid-template-columns:300px minmax(360px,480px) 340px;gap:16px;align-items:stretch}
+.card{min-height:0;background:var(--card);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow)}
+.side{padding:18px;display:flex;flex-direction:column;gap:14px;overflow:hidden}
+.section-title{display:flex;align-items:center;gap:8px;margin:0;font-size:15px;letter-spacing:-.02em;font-family:"Baloo 2","Trebuchet MS",ui-rounded,sans-serif;font-weight:700}
+.muted{color:var(--muted);font-size:13px;line-height:1.45;margin:0;font-family:"Nunito","Trebuchet MS",sans-serif}
+.select-wrap label{display:block;font-size:12px;font-weight:800;margin-bottom:7px;font-family:"Nunito","Trebuchet MS",sans-serif}
+.select-wrap select{width:100%;padding:12px 14px;border-radius:16px;border:1px solid var(--line);background:#fff;color:var(--text);box-shadow:inset 0 1px 0 rgba(255,255,255,.8);font-family:"Nunito","Trebuchet MS",sans-serif;font-weight:700}
+.primary,.outline,.chip{border:0;transition:transform .12s ease, box-shadow .18s ease, background .18s ease}
+.primary:hover,.outline:hover,.chip:hover{transform:translateY(-1px)}
+.primary{padding:12px 14px;border-radius:16px;background:linear-gradient(180deg,var(--accent),#6e88ff);color:#fff;font-weight:800;box-shadow:0 12px 22px rgba(97,134,255,.28);font-family:"Nunito","Trebuchet MS",sans-serif}
+.secret-card{padding:15px 16px;border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(247,249,255,.88));border:1px solid var(--line)}
+.secret-row{display:flex;align-items:center;gap:12px}
+.secret-icon{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;font-size:28px;background:linear-gradient(180deg,#ffffff,#eef3ff);box-shadow:inset 0 1px 0 rgba(255,255,255,.8)}
+.secret-copy h2{margin:0 0 3px;font-size:20px;letter-spacing:-.03em;font-family:"Baloo 2","Trebuchet MS",ui-rounded,sans-serif;font-weight:700}
+.secret-copy p{margin:0;color:var(--muted);font-size:13px;font-family:"Nunito","Trebuchet MS",sans-serif}
+.dots{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.dot{width:8px;height:8px;border-radius:50%;background:#d8e0ef}
+.dot.used{background:var(--accent)}
+.count{margin-top:8px;color:var(--muted);font-size:12px;font-weight:800;font-family:"Nunito","Trebuchet MS",sans-serif}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.outline{padding:11px 10px;border-radius:14px;background:#fff;color:var(--accent);font-weight:800;border:1px solid var(--line);font-family:"Nunito","Trebuchet MS",sans-serif}
+.status{min-height:18px;color:var(--good);font-weight:800;font-size:13px;font-family:"Nunito","Trebuchet MS",sans-serif}
+.mini{padding:10px 12px;border-radius:16px;background:rgba(255,247,228,.95);color:#7a6444;font-size:12px;line-height:1.45;border:1px solid rgba(203,174,126,.18);font-family:"Nunito","Trebuchet MS",sans-serif}
+.examples{display:flex;flex-wrap:wrap;gap:8px;align-content:flex-start;overflow:auto;padding-right:3px}
+.chip{text-align:left;padding:10px 12px;border-radius:18px;background:rgba(255,255,255,.92);border:1px solid var(--line);color:#455978;font-size:12px;line-height:1.28;box-shadow:0 8px 18px rgba(0,0,0,.04);font-family:"Nunito","Trebuchet MS",sans-serif;font-weight:700}
+.right .examples{flex:1}
+.phone-wrap{display:flex;align-items:center;justify-content:center;min-height:0}
+.phone{width:100%;max-width:480px;height:100%;max-height:100%;padding:12px;border-radius:38px;background:linear-gradient(180deg,#222733,#0f121a);box-shadow:0 26px 70px rgba(17,20,32,.34), inset 0 1px 0 rgba(255,255,255,.08);position:relative}
+.phone::before{content:"";position:absolute;top:16px;left:50%;transform:translateX(-50%);width:118px;height:30px;border-radius:18px;background:#0d1017;z-index:4;box-shadow:inset 0 -1px 0 rgba(255,255,255,.04)}
+.screen{height:100%;border-radius:30px;overflow:hidden;display:grid;grid-template-rows:auto auto 1fr auto;background:linear-gradient(180deg,rgba(255,255,255,.92),rgba(255,255,255,.88));position:relative}
+.screen::before{content:"";position:absolute;inset:0;background:var(--wallpaper);opacity:1;pointer-events:none}
+.topbar,.chat-header,.messages,.composer{position:relative;z-index:1}
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:14px 20px 6px;font-size:12px;font-weight:800;color:#203148;font-family:"Nunito","Trebuchet MS",sans-serif}
+.notch-space{height:18px}
+.chat-header{display:flex;align-items:center;gap:12px;padding:8px 16px 12px;background:var(--phone-top);backdrop-filter:blur(10px);border-top:1px solid rgba(255,255,255,.25);border-bottom:1px solid rgba(76,101,141,.12)}
+.avatar{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font-size:20px;background:linear-gradient(180deg,#ffffff,#edf1ff);box-shadow:0 6px 18px rgba(31,59,122,.12)}
+.contact h3{margin:0;font-size:16px;letter-spacing:-.02em;font-family:"Baloo 2","Trebuchet MS",ui-rounded,sans-serif;font-weight:700}
+.contact p{margin:1px 0 0;color:var(--muted);font-size:12px;font-family:"Nunito","Trebuchet MS",sans-serif}
+.counter-pill{margin-left:auto;padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.92);border:1px solid var(--line);font-size:12px;font-weight:800;color:var(--muted);font-family:"Nunito","Trebuchet MS",sans-serif}
+.messages{min-height:0;overflow:auto;padding:14px 12px 8px;display:flex;flex-direction:column;gap:9px;scroll-behavior:smooth}
+.bubble{max-width:88%;padding:10px 12px;border-radius:19px;font-size:14px;line-height:1.42;white-space:pre-wrap;overflow-wrap:anywhere;box-shadow:0 10px 20px rgba(45,61,91,.08);font-family:"Nunito","Trebuchet MS",sans-serif}
+.bubble strong{display:block;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:#7888a3;margin-bottom:4px;font-family:"Nunito","Trebuchet MS",sans-serif}
+.bot{align-self:flex-start;background:var(--bubble-bot);border-bottom-left-radius:7px}
+.me{align-self:flex-end;background:var(--bubble-me);border-bottom-right-radius:7px}
+.composer{padding:10px 12px 12px;background:linear-gradient(180deg,rgba(255,255,255,.52),rgba(255,255,255,.82))}
+.input-row{display:flex;align-items:center;gap:8px;padding:8px;border-radius:22px;background:rgba(255,255,255,.92);border:1px solid rgba(76,101,141,.16);box-shadow:0 10px 22px rgba(37,53,88,.06)}
+.input-row input{flex:1;min-width:0;border:0;background:transparent;padding:7px 8px;outline:none;font-size:14px;color:var(--text);font-family:"Nunito","Trebuchet MS",sans-serif}
+.send{width:44px;height:44px;display:grid;place-items:center;border-radius:50%;padding:0;font-size:18px;flex:0 0 auto}
+.helper{margin-top:8px;padding:0 6px;color:var(--muted);font-size:11px;line-height:1.35;font-family:"Nunito","Trebuchet MS",sans-serif}
+.footer-note{font-size:11px;text-align:center;color:#75839b;margin-top:6px;font-family:"Nunito","Trebuchet MS",sans-serif}
+
+body[data-theme="mix"]{--bg:#e9f3ff;--bg2:#fff4de;--accent:#6c87ff;--bubble-me:#dbe5ff;--wallpaper:radial-gradient(circle at 20% 18%, rgba(255,255,255,.66) 0 10%, transparent 11%),radial-gradient(circle at 82% 26%, rgba(255,255,255,.52) 0 8%, transparent 9%),linear-gradient(180deg, rgba(172,203,255,.26), rgba(255,244,221,.22));}
+body[data-theme="animals"]{--bg:#e8f8ef;--bg2:#eef9ff;--accent:#4aaf84;--bubble-me:#daf5ea;--wallpaper:radial-gradient(circle at 22% 24%, rgba(255,255,255,.6) 0 10%, transparent 11%),linear-gradient(180deg, rgba(164,225,195,.20), rgba(223,244,255,.30));}
+body[data-theme="objects"]{--bg:#f2efff;--bg2:#fff8ea;--accent:#8b78ff;--bubble-me:#ebe5ff;--wallpaper:radial-gradient(circle at 20% 18%, rgba(255,255,255,.62) 0 10%, transparent 11%),linear-gradient(180deg, rgba(197,188,255,.22), rgba(255,243,214,.22));}
+body[data-theme="halloween"]{--bg:#261033;--bg2:#ffb14f;--text:#233149;--accent:#8e53ff;--bubble-me:#f0d9ff;--wallpaper:radial-gradient(circle at 84% 14%, rgba(255,219,135,.72) 0 8%, transparent 9%),radial-gradient(circle at 15% 82%, rgba(255,149,55,.18) 0 18%, transparent 19%),linear-gradient(180deg, rgba(92,44,121,.34), rgba(255,166,68,.16));}
+body[data-theme="christmas"]{--bg:#e6fff2;--bg2:#fff2f0;--accent:#db5065;--bubble-me:#ffe0e6;--wallpaper:radial-gradient(circle at 20% 15%, rgba(255,255,255,.70) 0 8%, transparent 9%),radial-gradient(circle at 76% 26%, rgba(132,206,157,.34) 0 11%, transparent 12%),linear-gradient(180deg, rgba(231,66,100,.12), rgba(103,181,126,.14));}
+body[data-theme="easter"]{--bg:#fff0f6;--bg2:#eef9ff;--accent:#f18ab8;--bubble-me:#ffe5f0;--wallpaper:radial-gradient(circle at 18% 20%, rgba(255,255,255,.66) 0 10%, transparent 11%),radial-gradient(circle at 78% 28%, rgba(181,223,255,.38) 0 10%, transparent 11%),linear-gradient(180deg, rgba(255,196,222,.22), rgba(214,238,255,.24));}
+body[data-theme="summer"]{--bg:#e8faff;--bg2:#fff1bf;--accent:#29a9d8;--bubble-me:#dcf5ff;--wallpaper:radial-gradient(circle at 84% 16%, rgba(255,225,102,.86) 0 8%, transparent 9%),radial-gradient(circle at 22% 88%, rgba(79,199,236,.16) 0 18%, transparent 19%),linear-gradient(180deg, rgba(82,206,241,.18), rgba(255,231,124,.18));}
+body[data-theme="winter"]{--bg:#ecf7ff;--bg2:#f5f7ff;--accent:#72a6eb;--bubble-me:#e2f0ff;--wallpaper:radial-gradient(circle at 20% 20%, rgba(255,255,255,.78) 0 8%, transparent 9%),radial-gradient(circle at 70% 30%, rgba(255,255,255,.58) 0 6%, transparent 7%),linear-gradient(180deg, rgba(183,216,255,.22), rgba(255,255,255,.12));}
+body[data-theme="school"]{--bg:#fff6d8;--bg2:#edf4ff;--accent:#4b7df2;--bubble-me:#dce7ff;--wallpaper:radial-gradient(circle at 18% 18%, rgba(255,255,255,.68) 0 9%, transparent 10%),linear-gradient(180deg, rgba(255,226,127,.20), rgba(184,209,255,.18));}
+
+@media (max-width:1180px){
+  .grid{grid-template-columns:270px minmax(320px,460px) 300px;gap:12px}
+}
+@media (max-width:980px){
+  body{overflow:auto}
+  .page{height:auto;min-height:100vh}
+  .grid{grid-template-columns:1fr;grid-auto-rows:auto;overflow:visible}
+  .phone-wrap{order:-1;min-height:620px}
+  .phone{max-width:560px;height:min(82vh,760px)}
+}
+@media (max-height:760px) and (min-width:981px){
+  .page{padding:10px}
+  .grid{gap:12px;grid-template-columns:280px minmax(340px,470px) 320px}
+  .side{padding:14px;gap:10px}
+  .secret-card{padding:13px}
+  .messages{padding-top:10px}
+  .bubble{font-size:13px;padding:9px 11px}
+  .helper{font-size:10px}
+}
+
+/* Centered, balanced desktop stage with hand-illustrated seasonal text wallpapers */
+@media (min-width:981px){
+ .page{max-width:1320px;padding:12px 26px 14px;gap:12px}
+ .header{width:min(100%,1200px);margin-inline:auto}
+ .grid{width:min(100%,1200px);margin-inline:auto;grid-template-columns:minmax(245px,1fr) minmax(365px,470px) minmax(245px,1fr);gap:18px}
+ .phone-wrap{min-width:0}
+ .phone{max-width:455px}
+}
+.screen{background-color:var(--paper-bg,#f9f6fc)}
+.screen::before{background:var(--wallpaper) !important;background-repeat:repeat !important;background-size:180px 160px !important;opacity:.62}
+.messages{background:linear-gradient(180deg,transparent 60%,rgba(255,255,255,.10))}
+.bubble.bot{background:rgba(255,255,255,.94)}
+.bubble.me{background:var(--bubble-me)}
+body[data-theme="halloween"] .screen::before{opacity:.54}
+body[data-theme="christmas"] .screen::before{opacity:.58}
+@media (min-width:981px) and (max-height:700px){.page{padding-top:7px;padding-bottom:7px;gap:7px}.grid{gap:12px}.side{padding:12px;gap:8px}.secret-card{padding:10px}.phone{padding:9px}.phone::before{top:13px}.screen{border-radius:29px}}
+body[data-theme="mix"]{--paper-bg:#dfeaff;--wallpaper:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22180%22%20height%3D%22160%22%20viewBox%3D%220%200%20180%20160%22%3E%3Crect%20width%3D%22180%22%20height%3D%22160%22%20fill%3D%22%23dfeaff%22%2F%3E%3Cpath%20d%3D%22M31%2015l4%2010%2011%201-8%207%203%2011-10-6-10%206%203-11-8-7%2011-1z%22%20fill%3D%22%23f4c665%22%2F%3E%3Ccircle%20cx%3D%22122%22%20cy%3D%2292%22%20r%3D%2212%22%20fill%3D%22%239dbaff%22%2F%3E%3Cpath%20d%3D%22M120%2079v26M107%2092h26%22%20stroke%3D%22%23fff%22%20stroke-width%3D%223%22%2F%3E%3Ccircle%20cx%3D%2275%22%20cy%3D%22119%22%20r%3D%224%22%20fill%3D%22%23fff%22%20opacity%3D%22.8%22%2F%3E%3Ccircle%20cx%3D%22164%22%20cy%3D%2247%22%20r%3D%223%22%20fill%3D%22%23fff%22%20opacity%3D%22.9%22%2F%3E%3C%2Fsvg%3E")}
+body[data-theme="animals"]{--paper-bg:#ecfaf0;--wallpaper:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22180%22%20height%3D%22160%22%20viewBox%3D%220%200%20180%20160%22%3E%3Crect%20width%3D%22180%22%20height%3D%22160%22%20fill%3D%22%23ecfaf0%22%2F%3E%3Cpath%20d%3D%22M32%2040c-4-6%201-13%207-11%206%201%208%208%204%2012%209%204%207%2016-3%2016H19c-10%200-11-12-2-16-4-5-1-12%205-12%206-1%2011%206%207%2011z%22%20fill%3D%22%239fcfb7%22%2F%3E%3Ccircle%20cx%3D%2290%22%20cy%3D%2292%22%20r%3D%2210%22%20fill%3D%22%239fcfb7%22%2F%3E%3Ccircle%20cx%3D%22118%22%20cy%3D%2296%22%20r%3D%227%22%20fill%3D%22%239fcfb7%22%2F%3E%3Ccircle%20cx%3D%22138%22%20cy%3D%2280%22%20r%3D%227%22%20fill%3D%22%239fcfb7%22%2F%3E%3Ccircle%20cx%3D%2275%22%20cy%3D%22119%22%20r%3D%224%22%20fill%3D%22%23fff%22%20opacity%3D%22.8%22%2F%3E%3Ccircle%20cx%3D%22164%22%20cy%3D%2247%22%20r%3D%223%22%20fill%3D%22%23fff%22%20opacity%3D%22.9%22%2F%3E%3C%2Fsvg%3E")}
+body[data-theme="objects"]{--paper-bg:#f6f0ff;--wallpaper:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22180%22%20height%3D%22160%22%20viewBox%3D%220%200%20180%20160%22%3E%3Crect%20width%3D%22180%22%20height%3D%22160%22%20fill%3D%22%23f6f0ff%22%2F%3E%3Crect%20x%3D%2219%22%20y%3D%2220%22%20width%3D%2238%22%20height%3D%2236%22%20rx%3D%228%22%20fill%3D%22%23ccbaff%22%2F%3E%3Cpath%20d%3D%22M28%2038h20M38%2028v20%22%20stroke%3D%22white%22%20stroke-width%3D%224%22%2F%3E%3Ccircle%20cx%3D%22126%22%20cy%3D%2295%22%20r%3D%2216%22%20fill%3D%22%23ffe3ac%22%2F%3E%3Cpath%20d%3D%22M118%2095l6%206%2013-15%22%20stroke%3D%22%23ac88eb%22%20stroke-width%3D%224%22%20fill%3D%22none%22%2F%3E%3Ccircle%20cx%3D%2275%22%20cy%3D%22119%22%20r%3D%224%22%20fill%3D%22%23fff%22%20opacity%3D%22.8%22%2F%3E%3Ccircle%20cx%3D%22164%22%20cy%3D%2247%22%20r%3D%223%22%20fill%3D%22%23fff%22%20opacity%3D%22.9%22%2F%3E%3C%2Fsvg%3E")}
+body[data-theme="halloween"]{--paper-bg:#f8e9fa;--wallpaper:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22180%22%20height%3D%22160%22%20viewBox%3D%220%200%20180%20160%22%3E%3Crect%20width%3D%22180%22%20height%3D%22160%22%20fill%3D%22%23f8e9fa%22%2F%3E%3Cpath%20d%3D%22M17%2034c0-14%209-18%2017-12%209-6%2020%200%2020%2012%200%2015-9%2022-19%2022S17%2049%2017%2034z%22%20fill%3D%22%23f6a64e%22%2F%3E%3Cpath%20d%3D%22M34%2025q-3-10%206-12%22%20fill%3D%22none%22%20stroke%3D%22%237a8f58%22%20stroke-width%3D%225%22%2F%3E%3Cpath%20d%3D%22M27%2037l5%204-9%200zM43%2037l5%204-9%200z%22%20fill%3D%22%237d466d%22%2F%3E%3Cpath%20d%3D%22M27%2046q8%2010%2017%200%22%20stroke%3D%22%237d466d%22%20stroke-width%3D%223%22%20fill%3D%22none%22%2F%3E%3Cpath%20d%3D%22M106%2098q-9-14-22-6%203-14%2019-10%2012-14%2026%200%2014-4%2018%2010-15-7-25%206l-8-8z%22%20fill%3D%22%23b49acc%22%2F%3E%3Ccircle%20cx%3D%22117%22%20cy%3D%2235%22%20r%3D%229%22%20fill%3D%22%23ffd997%22%2F%3E%3Ccircle%20cx%3D%2275%22%20cy%3D%22119%22%20r%3D%224%22%20fill%3D%22%23fff%22%20opacity%3D%22.8%22%2F%3E%3Ccircle%20cx%3D%22164%22%20cy%3D%2247%22%20r%3D%223%22%20fill%3D%22%23fff%22%20opacity%3D%22.9%22%2F%3E%3C%2Fsvg%3E")}
+body[data-theme="christmas"]{--paper-bg:#edf9f3;--wallpaper:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22180%22%20height%3D%22160%22%20viewBox%3D%220%200%20180%20160%22%3E%3Crect%20width%3D%22180%22%20height%3D%22160%22%20fill%3D%22%23edf9f3%22%2F%3E%3Cpath%20d%3D%22M33%2013l-22%2030h12l-11%2018h43L44%2043h12z%22%20fill%3D%22%2378b995%22%2F%3E%3Crect%20x%3D%2230%22%20y%3D%2258%22%20width%3D%228%22%20height%3D%2210%22%20rx%3D%222%22%20fill%3D%22%23bd8b73%22%2F%3E%3Ccircle%20cx%3D%2232%22%20cy%3D%2237%22%20r%3D%224%22%20fill%3D%22%23ffcb77%22%2F%3E%3Ccircle%20cx%3D%2242%22%20cy%3D%2250%22%20r%3D%224%22%20fill%3D%22%23f58a94%22%2F%3E%3Cpath%20d%3D%22M120%2079v43M98%20100h44M104%2084l32%2032M136%2084l-32%2032%22%20stroke%3D%22%2393c3c0%22%20stroke-width%3D%223%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%22145%22%20cy%3D%2229%22%20r%3D%226%22%20fill%3D%22%23e8b766%22%2F%3E%3Ccircle%20cx%3D%2275%22%20cy%3D%22119%22%20r%3D%224%22%20fill%3D%22%23fff%22%20opacity%3D%22.8%22%2F%3E%3Ccircle%20cx%3D%22164%22%20cy%3D%2247%22%20r%3D%223%22%20fill%3D%22%23fff%22%20opacity%3D%22.9%22%2F%3E%3C%2Fsvg%3E")}
+body[data-theme="easter"]{--paper-bg:#fff0f7;--wallpaper:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22180%22%20height%3D%22160%22%20viewBox%3D%220%200%20180%20160%22%3E%3Crect%20width%3D%22180%22%20height%3D%22160%22%20fill%3D%22%23fff0f7%22%2F%3E%3Cellipse%20cx%3D%2232%22%20cy%3D%2238%22%20rx%3D%2219%22%20ry%3D%2225%22%20fill%3D%22%23ffb6cd%22%2F%3E%3Cpath%20d%3D%22M16%2032q16%2011%2032%200M15%2046q18%2010%2034%200%22%20fill%3D%22none%22%20stroke%3D%22%23fff2b2%22%20stroke-width%3D%225%22%2F%3E%3Ccircle%20cx%3D%22120%22%20cy%3D%2291%22%20r%3D%2217%22%20fill%3D%22%23b5d7ff%22%2F%3E%3Ccircle%20cx%3D%22114%22%20cy%3D%2287%22%20r%3D%224%22%20fill%3D%22white%22%2F%3E%3Ccircle%20cx%3D%22128%22%20cy%3D%2295%22%20r%3D%224%22%20fill%3D%22white%22%2F%3E%3Ccircle%20cx%3D%2275%22%20cy%3D%22119%22%20r%3D%224%22%20fill%3D%22%23fff%22%20opacity%3D%22.8%22%2F%3E%3Ccircle%20cx%3D%22164%22%20cy%3D%2247%22%20r%3D%223%22%20fill%3D%22%23fff%22%20opacity%3D%22.9%22%2F%3E%3C%2Fsvg%3E")}
+body[data-theme="summer"]{--paper-bg:#e7faff;--wallpaper:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22180%22%20height%3D%22160%22%20viewBox%3D%220%200%20180%20160%22%3E%3Crect%20width%3D%22180%22%20height%3D%22160%22%20fill%3D%22%23e7faff%22%2F%3E%3Ccircle%20cx%3D%2237%22%20cy%3D%2234%22%20r%3D%2220%22%20fill%3D%22%23ffd36e%22%2F%3E%3Cpath%20d%3D%22M37%204v-7M37%2071v-7M7%2034H0M74%2034h-7M16%2013l-6-6M60%2057l6%206M59%2013l6-6M16%2056l-6%206%22%20stroke%3D%22%23f6c258%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%2F%3E%3Cpath%20d%3D%22M96%2091q15-14%2030%200t30%200%22%20stroke%3D%22%2378cadc%22%20stroke-width%3D%226%22%20fill%3D%22none%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2275%22%20cy%3D%22119%22%20r%3D%224%22%20fill%3D%22%23fff%22%20opacity%3D%22.8%22%2F%3E%3Ccircle%20cx%3D%22164%22%20cy%3D%2247%22%20r%3D%223%22%20fill%3D%22%23fff%22%20opacity%3D%22.9%22%2F%3E%3C%2Fsvg%3E")}
+body[data-theme="winter"]{--paper-bg:#eff7ff;--wallpaper:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22180%22%20height%3D%22160%22%20viewBox%3D%220%200%20180%20160%22%3E%3Crect%20width%3D%22180%22%20height%3D%22160%22%20fill%3D%22%23eff7ff%22%2F%3E%3Cpath%20d%3D%22M36%2013v46M13%2036h46M20%2020l32%2032M52%2020L20%2052%22%20stroke%3D%22%238ab8e9%22%20stroke-width%3D%224%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2236%22%20cy%3D%2236%22%20r%3D%225%22%20fill%3D%22%23d4eaff%22%2F%3E%3Cpath%20d%3D%22M120%2080v34M103%2097h34M108%2085l24%2024M132%2085l-24%2024%22%20stroke%3D%22%23b2ccea%22%20stroke-width%3D%223%22%20stroke-linecap%3D%22round%22%2F%3E%3Ccircle%20cx%3D%2275%22%20cy%3D%22119%22%20r%3D%224%22%20fill%3D%22%23fff%22%20opacity%3D%22.8%22%2F%3E%3Ccircle%20cx%3D%22164%22%20cy%3D%2247%22%20r%3D%223%22%20fill%3D%22%23fff%22%20opacity%3D%22.9%22%2F%3E%3C%2Fsvg%3E")}
+body[data-theme="school"]{--paper-bg:#fff9e6;--wallpaper:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22180%22%20height%3D%22160%22%20viewBox%3D%220%200%20180%20160%22%3E%3Crect%20width%3D%22180%22%20height%3D%22160%22%20fill%3D%22%23fff9e6%22%2F%3E%3Cpath%20d%3D%22M27%2014l26%209-16%2046-26-9z%22%20fill%3D%22%23a8c6ff%22%2F%3E%3Cpath%20d%3D%22M32%2020l15%205%22%20stroke%3D%22white%22%20stroke-width%3D%224%22%2F%3E%3Cpath%20d%3D%22M110%2076l30%2030-9%209-30-30z%22%20fill%3D%22%23efb465%22%2F%3E%3Cpath%20d%3D%22M101%2085l-6-6%2015-3z%22%20fill%3D%22%23bfb0a2%22%2F%3E%3Ccircle%20cx%3D%22132%22%20cy%3D%2230%22%20r%3D%2210%22%20fill%3D%22%23ffc9bc%22%2F%3E%3Ccircle%20cx%3D%2275%22%20cy%3D%22119%22%20r%3D%224%22%20fill%3D%22%23fff%22%20opacity%3D%22.8%22%2F%3E%3Ccircle%20cx%3D%22164%22%20cy%3D%2247%22%20r%3D%223%22%20fill%3D%22%23fff%22%20opacity%3D%22.9%22%2F%3E%3C%2Fsvg%3E")}
+
+/* Minimal AI controls matching the original rounded design. */
+.ai-controls{display:flex;gap:7px;align-items:center;flex-wrap:wrap;padding:10px 12px;background:rgba(255,255,255,.66);border:1px solid var(--line);border-radius:16px}
+.ai-controls label{display:flex;align-items:center;gap:8px;font-family:"Nunito","Trebuchet MS",sans-serif;font-size:13px;font-weight:800;cursor:pointer}
+.ai-controls input{accent-color:var(--accent);width:17px;height:17px}
+.ai-status{font-size:11px;font-weight:750;color:var(--muted);line-height:1.25}
+.ai-status.online{color:#197953}
+.ai-status.error{color:#b14937}
+.phone-wrap .phone{min-width:0}
+@media (max-height:690px) and (min-width:981px){.side{gap:9px}.ai-controls{padding:7px 10px}}
+</style>
+</head>
+<body data-theme="mix">
+<div class="page">
+  <header class="header">
+    <div class="brand">
+      <h1>🔎 Devine mon secret !</h1>
+    </div>
+    
+  </header>
+
+  <div class="grid">
+    <aside class="card side left">
+      <div class="select-wrap">
+        <label for="theme">Choisis un thème</label>
+        <select id="theme">
+          <option value="mix">🌈 Tous les thèmes</option>
+          <option value="animals">🐾 Les animaux</option>
+          <option value="objects">🧸 Les objets du quotidien</option>
+          <option value="halloween">🎃 Halloween</option>
+          <option value="christmas">🎄 Noël</option>
+          <option value="easter">🐣 Pâques</option>
+          <option value="summer">☀️ L'été</option>
+          <option value="winter">❄️ L'hiver</option>
+          <option value="school">🎒 L'école</option>
+        </select>
+      </div>
+      <button class="primary" id="new" type="button">↻ Nouveau mot</button>
+      <div class="ai-controls"><label><input type="checkbox" id="aiMode" disabled> ✨ Mode IA</label><span class="ai-status" id="aiStatus">Vérification de la connexion…</span></div>
+
+      <section class="secret-card" aria-live="polite">
+        <div class="secret-row">
+          <div class="secret-icon" id="secretIcon">❔</div>
+          <div class="secret-copy">
+            <h2 id="secretTitle">J'ai choisi un mot !</h2>
+            <p id="secretSub">À toi de le découvrir.</p>
+          </div>
+        </div>
+        <div class="dots" id="dots"></div>
+        <div class="count" id="count">0 / 20 questions</div>
+      </section>
+
+      <div class="actions">
+        <button type="button" class="outline" id="hint">✨ Un indice</button>
+        <button type="button" class="outline" id="reveal">👀 Révéler</button>
+      </div>
+      <div class="status" id="status"></div>
+    </aside>
+
+    <div class="phone-wrap">
+      <div class="phone">
+        <div class="screen">
+          <div class="topbar"><span>9:41</span><span>📶 🔋</span></div>
+          <div class="chat-header">
+            <div class="avatar">💬</div>
+            <div class="contact">
+              <h3>Le mystère</h3>
+              <p id="phoneSub">Pose ta première question !</p>
+            </div>
+            <div class="counter-pill" id="phoneCounter">0 / 20</div>
+          </div>
+          <div class="messages" id="chat" role="log" aria-live="polite"></div>
+          <div class="composer">
+            <form id="questionForm">
+              <div class="input-row">
+                <input id="question" autocomplete="off" maxlength="180" placeholder="Écris un texto…" aria-label="Ta question en français" required>
+                <button class="primary send" id="send" type="submit">➤</button>
+              </div>
+            </form>
+            <div class="helper">Tu peux demander par exemple : « Est-ce que tu es un animal ? » ou simplement proposer « un chat ? »</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <aside class="card side right">
+      <div>
+        <h3 class="section-title">✨ Questions suggérées</h3>
+        <p class="muted">Clique sur une bulle pour la mettre dans la zone de texte. Après chaque réponse, de nouvelles idées apparaissent automatiquement.</p>
+      </div>
+      <div class="examples" id="examples"></div>
+    </aside>
+  </div>
+</div>
+<script>
+'use strict';
+// Each secret has an answer key based on verified, age-appropriate properties.
+const W=[];function add(word,group,tags,hints,aliases=[]){W.push({word,group,tags:new Set(tags.split(' ').filter(Boolean)),hints,aliases:[word,...aliases]})}
+add('un chat','animals','animal vivant poils quatre domestique maison petit doux','Je peux ronronner.',['chat','le chat','une chatte']);
+add('un chien','animals','animal vivant poils quatre domestique maison dehors petit doux','J’aime me promener avec les humains.',['chien','le chien']);
+add('un lapin','animals','animal vivant poils quatre domestique ferme petit doux paques','J’ai de longues oreilles.',['lapin','le lapin']);
+add('un cheval','animals','animal vivant poils quatre ferme dehors grand','On peut monter sur mon dos.',['cheval','le cheval']);
+add('une vache','animals','animal vivant poils quatre ferme dehors grand lait','Je donne du lait.',['vache','la vache']);
+add('un mouton','animals','animal vivant poils quatre ferme dehors doux blanc','Ma laine tient bien chaud.',['mouton','le mouton']);
+add('un lion','animals','animal vivant poils quatre sauvage dehors grand jaune','Je suis célèbre pour ma crinière.',['lion','le lion']);
+add('un éléphant','animals','animal vivant quatre sauvage dehors grand gris','J’ai une très longue trompe.',['elephant','éléphant','l éléphant']);
+add('une girafe','animals','animal vivant quatre sauvage dehors grand jaune brun','Mon cou est très long.',['girafe','la girafe']);
+add('un papillon','animals','animal vivant volant ailes petit dehors jardin','J’ai des ailes colorées.',['papillon','le papillon']);
+add('une abeille','animals','animal vivant volant ailes petit dehors jardin jaune noir','Je fabrique du miel.',['abeille','l’abeille','l abeille']);
+add('un poisson','animals','animal vivant eau petit','Je nage et je respire sous l’eau.',['poisson','le poisson']);
+add('un dauphin','animals','animal vivant eau sauvage dehors grand gris','Je suis un mammifère qui nage dans la mer.',['dauphin','le dauphin']);
+add('un pingouin','animals','animal vivant eau dehors noir blanc hiver froid plumes ailes','Je suis un oiseau qui nage très bien.',['pingouin','le pingouin']);
+add('une tortue','animals','animal vivant quatre petit eau dehors vert','Je porte ma maison sur mon dos.',['tortue','la tortue']);
+add('un hibou','animals','animal vivant volant ailes plumes dehors foret nuit brun halloween','Je suis un oiseau qui voit bien la nuit.',['hibou','le hibou']);
+add('une chauve-souris','halloween','animal vivant volant ailes dehors nuit noir halloween','Je suis un mammifère qui vole la nuit.',['chauve souris','chauve-souris','la chauve souris','la chauve-souris']);
+add('une araignée','halloween','animal vivant petit maison dehors noir halloween','Je peux fabriquer une toile.',['araignee','araignée','l araignee','l’araignée']);
+add('une citrouille','halloween','objet orange rond jardin dehors decoration halloween','On peut me sculpter pour Halloween.',['citrouille','la citrouille']);
+add('un fantôme','halloween','imaginaire blanc halloween nuit peur volant','Je traverse parfois les murs dans les histoires.',['fantome','fantôme','le fantôme']);
+add('une sorcière','halloween','imaginaire halloween nuit peur','Dans les contes, je peux préparer des potions.',['sorciere','sorcière','la sorcière']);
+add('un squelette','halloween','objet blanc halloween peur','Je suis composé d’os.',['squelette','le squelette']);
+add('un bonbon','halloween','objet nourriture petit sucre halloween noel paques','On me reçoit souvent à la chasse aux bonbons.',['bonbon','le bonbon']);
+add('un balai','halloween','objet maison bois halloween','On m’utilise pour nettoyer le sol.',['balai','le balai']);
+add('un sapin','christmas','vivant plante dehors foret grand vert noel hiver decoration','On peut me décorer avec des guirlandes.',['sapin','le sapin','sapin de noel']);
+add('un cadeau','christmas','objet maison noel paques decoration','On m’ouvre pour découvrir une surprise.',['cadeau','le cadeau']);
+add('une boule de Noël','christmas','objet rond decoration noel petit maison','On me suspend à un sapin.',['boule de noel','boule','une boule']);
+add('une étoile','christmas','objet decoration jaune noel lumineux','On me place parfois au sommet du sapin.',['etoile','étoile','une etoile']);
+add('un renne','christmas','animal vivant quatre poils dehors grand brun hiver noel','Dans les histoires, je tire le traîneau du Père Noël.',['renne','le renne']);
+add('un bonhomme de neige','winter','objet blanc froid hiver dehors noel','On me construit avec de la neige.',['bonhomme de neige','le bonhomme de neige']);
+add('un traîneau','christmas','objet dehors hiver noel sport','Je glisse sur la neige.',['traineau','traîneau','le traineau']);
+add('un œuf de Pâques','easter','objet nourriture rond paques petit sucre','Je peux être caché dans le jardin et fait de chocolat.',['oeuf','œuf','oeuf de paques','œuf de pâques','un oeuf','un œuf']);
+add('un poussin','easter','animal vivant petit jaune ferme plumes paques','Je suis un bébé poulet.',['poussin','le poussin']);
+add('un panier','easter','objet maison jardin paques bois','On me remplit parfois d’œufs de Pâques.',['panier','le panier']);
+add('une fleur','easter','vivant plante dehors jardin petit paques','J’ai des pétales.',['fleur','la fleur']);
+add('un soleil','summer','objet dehors grand chaud jaune ete lumineux rond','Je brille dans le ciel pendant la journée.',['soleil','le soleil']);
+add('une glace','summer','objet nourriture sucre froid ete petit','On me mange quand il fait chaud.',['glace','la glace','creme glacee']);
+add('un ballon de plage','summer','objet jouet rond dehors ete plastique','On joue avec moi sur le sable.',['ballon de plage','ballon','le ballon']);
+add('un seau','summer','objet plastique dehors ete jouet','On peut me remplir de sable ou d’eau.',['seau','le seau']);
+add('des lunettes de soleil','summer','objet vetement dehors ete plastique','Je protège les yeux de la lumière.',['lunettes de soleil','lunettes','des lunettes']);
+add('une écharpe','winter','objet vetement doux hiver froid maison','Je me porte autour du cou.',['echarpe','écharpe','une echarpe']);
+add('un gant','winter','objet vetement doux hiver froid petit','Je garde la main au chaud.',['gant','le gant']);
+add('un flocon de neige','winter','objet blanc petit froid hiver dehors','Je tombe du ciel quand il neige.',['flocon','flocon de neige','un flocon']);
+add('un livre','objects','objet maison ecole papier petit','Mes pages racontent une histoire.',['livre','le livre']);
+add('une chaise','objects','objet maison ecole bois plastique','On s’assoit sur moi.',['chaise','la chaise']);
+add('une lampe','objects','objet maison electrique lumineux','Je donne de la lumière dans une pièce.',['lampe','la lampe']);
+add('un vélo','objects','objet dehors metal sport transporte','J’ai deux roues et des pédales.',['velo','vélo','le velo']);
+add('une balle','objects','objet rond jouet sport dehors petit','On peut me lancer pour jouer.',['balle','la balle']);
+add('une brosse à dents','objects','objet maison plastique petit','On m’utilise pour se nettoyer les dents.',['brosse a dents','brosse à dents','la brosse']);
+add('un crayon','school','objet ecole bois petit','On peut écrire ou dessiner avec moi.',['crayon','le crayon']);
+add('une gomme','school','objet ecole petit','Je fais disparaître les erreurs au crayon.',['gomme','la gomme']);
+add('un sac à dos','school','objet ecole maison tissu','On me porte sur le dos pour transporter ses affaires.',['sac a dos','sac à dos','un sac','sac']);
+add('une règle','school','objet ecole plastique bois petit','On m’utilise pour tracer des lignes droites.',['regle','règle','la regle']);
+add('un cahier','school','objet ecole papier petit','On écrit sur mes pages pendant les cours.',['cahier','le cahier']);
+add('des ciseaux','school','objet ecole metal plastique petit','On m’utilise pour couper du papier.',['ciseaux','les ciseaux']);
+
+// Common household vocabulary, including bathrooms, furniture, and kitchen objects.
+add('une table','objects','objet meuble maison frequent_maison cuisine salon salle_a_manger bois quatre grand','On pose des objets sur moi.',['table','la table','une table de cuisine']);
+add('un verre','objects','objet maison frequent_maison cuisine salle_a_manger petit boire fragile verre','Je sers à boire de l’eau ou du jus.',['verre','le verre','un verre d eau']);
+add('un lit','objects','objet meuble maison frequent_maison chambre grand doux dormir','On dort dans mes draps.',['lit','le lit']);
+add('un canapé','objects','objet meuble maison frequent_maison salon grand doux tissu asseoir','Plusieurs personnes peuvent s’asseoir sur moi.',['canape','canapé','le canapé','un sofa']);
+add('une armoire','objects','objet meuble maison frequent_maison chambre grand rangement bois','On range des vêtements à l’intérieur de moi.',['armoire','l armoire','une penderie']);
+add('une commode','objects','objet meuble maison frequent_maison chambre grand rangement bois','J’ai des tiroirs pour les vêtements.',['commode','la commode']);
+add('un bureau','objects','objet meuble maison frequent_maison chambre ecole bois ecriture','Je suis une table utilisée pour travailler.',['bureau','le bureau']);
+add('une étagère','objects','objet meuble maison frequent_maison salon chambre bois rangement','On pose des livres et des objets sur mes planches.',['etagere','étagère','l étagère']);
+add('un fauteuil','objects','objet meuble maison frequent_maison salon doux tissu asseoir','Je suis un siège confortable pour une personne.',['fauteuil','le fauteuil']);
+add('un miroir','objects','objet maison frequent_maison salle_de_bain chambre verre fragile','On voit son reflet dans moi.',['miroir','le miroir']);
+add('une serviette','objects','objet maison frequent_maison salle_de_bain tissu doux hygiene','On m’utilise pour se sécher.',['serviette','la serviette','une serviette de bain']);
+add('un savon','objects','objet maison frequent_maison salle_de_bain hygiene nettoyage petit','Je fais de la mousse quand on se lave.',['savon','le savon']);
+add('une baignoire','objects','objet maison frequent_maison salle_de_bain hygiene grand eau','On peut prendre un bain dans moi.',['baignoire','la baignoire']);
+add('une douche','objects','objet maison frequent_maison salle_de_bain hygiene eau nettoyage','On s’y lave sous l’eau qui coule.',['douche','la douche']);
+add('un lavabo','objects','objet maison frequent_maison salle_de_bain hygiene eau','On s’y lave souvent les mains.',['lavabo','le lavabo','un evier de salle de bain']);
+add('une toilette','objects','objet maison frequent_maison salle_de_bain hygiene','On me trouve dans la salle de bain.',['toilettes','les toilettes','wc','un wc']);
+add('une brosse à cheveux','objects','objet maison frequent_maison salle_de_bain chambre hygiene plastique petit','On m’utilise pour se coiffer.',['brosse a cheveux','brosse à cheveux']);
+add('un dentifrice','objects','objet maison frequent_maison salle_de_bain hygiene petit','On me met sur une brosse à dents.',['dentifrice','le dentifrice']);
+add('un shampooing','objects','objet maison frequent_maison salle_de_bain hygiene nettoyage','On m’utilise pour laver les cheveux.',['shampoing','shampooing','le shampooing']);
+add('une assiette','objects','objet maison frequent_maison cuisine salle_a_manger vaisselle rond','On y pose de la nourriture.',['assiette','l assiette']);
+add('une fourchette','objects','objet maison frequent_maison cuisine salle_a_manger metal vaisselle petit','Je sers à manger certains aliments.',['fourchette','la fourchette']);
+add('une cuillère','objects','objet maison frequent_maison cuisine salle_a_manger metal vaisselle petit','Je sers à manger la soupe.',['cuillere','cuillère','la cuillère']);
+add('un bol','objects','objet maison frequent_maison cuisine salle_a_manger vaisselle rond','On met parfois des céréales dans moi.',['bol','le bol']);
+add('une tasse','objects','objet maison frequent_maison cuisine salle_a_manger vaisselle petit','Je peux contenir une boisson chaude.',['tasse','la tasse']);
+add('une bouteille','objects','objet maison frequent_maison cuisine boire plastique verre','On peut transporter de l’eau dans moi.',['bouteille','la bouteille']);
+add('un réfrigérateur','objects','objet maison frequent_maison cuisine electrique grand froid','Je garde la nourriture au frais.',['refrigerateur','réfrigérateur','frigo','le frigo']);
+add('une casserole','objects','objet maison frequent_maison cuisine metal cuisson','On peut faire cuire des aliments dedans.',['casserole','la casserole']);
+add('une télévision','objects','objet maison frequent_maison salon electrique grand ecran','On peut regarder des émissions sur moi.',['television','télévision','tele','télé','la tele']);
+add('un ordinateur','objects','objet maison frequent_maison ecole electrique ecran','On m’utilise pour travailler, jouer et apprendre.',['ordinateur','l ordinateur','un ordi']);
+add('un téléphone','objects','objet maison frequent_maison electrique ecran petit communication','On peut appeler ou envoyer des messages avec moi.',['telephone','téléphone','portable','un portable']);
+add('une clé','objects','objet maison frequent_maison metal petit','J’ouvre une serrure.',['cle','clé','la clé','une clef']);
+add('une porte','objects','objet maison frequent_maison bois grand','On m’ouvre pour entrer dans une pièce.',['porte','la porte']);
+add('une fenêtre','objects','objet maison frequent_maison verre grand','Je laisse entrer la lumière dans une pièce.',['fenetre','fenêtre','la fenêtre']);
+add('un tapis','objects','objet maison frequent_maison salon chambre tissu doux','On me pose souvent sur le sol.',['tapis','le tapis']);
+add('une horloge','objects','objet maison frequent_maison salon electrique rond','J’indique l’heure.',['horloge','l horloge']);
+add('une peluche','objects','objet maison frequent_maison chambre jouet doux tissu petit','Je suis un jouet tout doux.',['peluche','la peluche','un doudou']);
+
+const enrich={
+ 'un chat':'reel frequent_maison bruit mange viande nuit',
+ 'un chien':'reel frequent_maison bruit mange viande',
+ 'un lapin':'reel mange herbe jardin',
+ 'un cheval':'reel mange herbe bruit ferme',
+ 'une vache':'reel mange herbe bruit ferme',
+ 'un mouton':'reel mange herbe bruit ferme',
+ 'un lion':'reel mange viande bruit',
+ 'un éléphant':'reel mange plante bruit',
+ 'une girafe':'reel mange plante',
+ 'un papillon':'reel mange plante jardin',
+ 'une abeille':'reel bruit mange plante jardin',
+ 'un poisson':'reel mange eau',
+ 'un dauphin':'reel mange viande bruit eau',
+ 'un pingouin':'reel mange viande bruit eau froid',
+ 'une tortue':'reel mange eau',
+ 'un hibou':'reel bruit mange viande nuit foret',
+ 'une chauve-souris':'reel bruit mange nuit',
+ 'une araignée':'reel frequent_maison mange insecte jardin',
+ 'une citrouille':'reel mangeable plante jardin cuisine orange',
+ 'un fantôme':'imaginaire nuit',
+ 'une sorcière':'imaginaire personnage',
+ 'un squelette':'reel corps os',
+ 'un bonbon':'reel frequent_maison mangeable sucre cuisine',
+ 'un balai':'reel frequent_maison outil nettoyage',
+ 'un sapin':'reel plante foret jardin',
+ 'un cadeau':'reel frequent_maison',
+ 'une boule de Noël':'reel frequent_maison fragile decoration',
+ 'une étoile':'reel ciel nuit lumineux',
+ 'un renne':'reel mange herbe foret',
+ 'un bonhomme de neige':'reel froid neige fabriquable',
+ 'un traîneau':'reel sport transporte',
+ 'un œuf de Pâques':'reel mangeable chocolat sucre frequent_maison',
+ 'un poussin':'reel bruit mange ferme',
+ 'un panier':'reel frequent_maison rangement',
+ 'une fleur':'reel plante jardin frequent_maison',
+ 'un soleil':'reel ciel lumineux chaud',
+ 'une glace':'reel mangeable sucre froid cuisine',
+ 'un ballon de plage':'reel jouet plastique sport',
+ 'un seau':'reel frequent_maison plastique outil',
+ 'des lunettes de soleil':'reel frequent_maison vetement plastique',
+ 'une écharpe':'reel frequent_maison tissu vetement hiver',
+ 'un gant':'reel frequent_maison tissu vetement hiver',
+ 'un flocon de neige':'reel froid neige ciel',
+ 'un livre':'reel frequent_maison papier lecture',
+ 'une chaise':'reel frequent_maison meuble bois',
+ 'une lampe':'reel frequent_maison electrique lumineux',
+ 'un vélo':'reel sport transporte metal',
+ 'une balle':'reel frequent_maison jouet sport',
+ 'une brosse à dents':'reel frequent_maison hygiene plastique',
+ 'un crayon':'reel frequent_maison ecriture bois',
+ 'une gomme':'reel frequent_maison ecriture',
+ 'un sac à dos':'reel frequent_maison tissu rangement',
+ 'une règle':'reel frequent_maison ecole mesure',
+ 'un cahier':'reel frequent_maison papier ecriture',
+ 'des ciseaux':'reel frequent_maison ecole metal outil'
+};
+for(const w of W){for(const tag of (enrich[w.word]||'reel').split(' '))w.tags.add(tag)}
+
+// Add common locations / categories to existing words so natural questions have consistent answers.
+const extraTags={
+ 'une chaise':'meuble salon salle_a_manger frequent_maison asseoir',
+ 'une lampe':'salon chambre frequent_maison lumineux',
+ 'une brosse à dents':'salle_de_bain hygiene frequent_maison',
+ 'un balai':'cuisine frequent_maison nettoyage',
+ 'un livre':'salon chambre frequent_maison lecture',
+ 'un chat':'salon chambre',
+ 'un chien':'salon jardin',
+ 'un lapin':'jardin',
+ 'un cadeau':'salon',
+ 'une boule de Noël':'salon',
+ 'un sapin':'salon',
+ 'un cahier':'chambre',
+ 'un crayon':'chambre',
+ 'une gomme':'chambre',
+ 'une règle':'chambre',
+ 'une glace':'cuisine',
+ 'un bonbon':'cuisine',
+ 'un panier':'salon',
+ 'une fleur':'salon jardin',
+ 'un sac à dos':'chambre',
+ 'un gant':'chambre',
+ 'une écharpe':'chambre'
+};
+for(const w of W){for(const tag of (extraTags[w.word]||'').split(' ').filter(Boolean))w.tags.add(tag)}
+
+const groups={mix:W,animals:W.filter(w=>w.tags.has('animal')),objects:W.filter(w=>w.group==='objects'),halloween:W.filter(w=>w.tags.has('halloween')),christmas:W.filter(w=>w.tags.has('noel')),easter:W.filter(w=>w.tags.has('paques')),summer:W.filter(w=>w.tags.has('ete')),winter:W.filter(w=>w.tags.has('hiver')),school:W.filter(w=>w.tags.has('ecole'))};
+const $=s=>document.querySelector(s), norm=s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[’']/g,' ').replace(/[-–]/g,' ').replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim();
+let secret,spent=0,hints=0,finished=false,previous=null;let askedQuestions=new Set(),latestTopic="start",latestYes=null;const MAX=20;
+function say(who,msg){const d=document.createElement('div');d.className='bubble '+(who==='Moi'?'me':'bot');const st=document.createElement('strong');st.textContent=who;d.append(st,document.createTextNode(msg));$('#chat').append(d);$('#chat').scrollTop=$('#chat').scrollHeight}
+function update(){const d=$('#dots');d.innerHTML='';for(let i=0;i<MAX;i++){const v=document.createElement('span');v.className='dot'+(i<spent?' used':'');d.append(v)}$('#count').textContent=spent+' / '+MAX+' questions';$('#question').disabled=finished;$('#send').disabled=finished;$('#hint').disabled=finished||spent>=MAX;$('#reveal').disabled=finished;$('#phoneCounter').textContent=spent+' / '+MAX;}
+function newGame(){let pool=groups[$('#theme').value];let choices=pool.filter(x=>x!==previous);secret=choices[Math.floor(Math.random()*choices.length)]||pool[0];previous=secret;spent=0;hints=0;finished=false;askedQuestions=new Set();latestTopic='start';latestYes=null;$('#chat').innerHTML='';$('#status').textContent='';$('#secretIcon').textContent='❔';$('#secretTitle').textContent="J'ai choisi un mot !";$('#secretSub').textContent='À toi de le découvrir.';$('#phoneSub').textContent='Pose ta première question !';$('#question').value='';say('Le mystère','J’ai un mot secret ! Pose-moi une question à laquelle je peux répondre par oui ou non.');update();renderSuggestions();$('#question').focus()}
+function end(won){finished=true;$('#secretIcon').textContent=won?'🎉':'🔓';$('#secretTitle').textContent=secret.word;$('#secretSub').textContent=won?'Bravo, tu as trouvé !':'Le mot secret était…';$('#phoneSub').textContent=won?'Bravo, tu as trouvé !':'Le mot secret était : '+secret.word;$('#status').textContent=won?'🌟 Félicitations !':'Une autre partie ?';update();renderSuggestions()}
+
+// Topic recognizer. Check specific rooms and exact nouns before broad properties.
+const rules=[
+ [/(?:salle (?:de |d |des )?bain|salles? de bains?|toilettes|wc|bathroom)/,'salle_de_bain'],
+ [/(?:salle a manger|piece ou on mange)/,'salle_a_manger'],
+ [/(?:chambre(?: a coucher)?|piece ou on dort)/,'chambre'],
+ [/(?:salon|piece a vivre)/,'salon'],
+ [/(?:cuisine|frigo|refrigerateur)/,'cuisine'],
+ [/(?:ecole|classe|scolaire|cours)/,'ecole'],
+ [/(?:jardin|parc)/,'jardin'],
+ [/(?:foret|bois dans la nature)/,'foret'],
+ [/(?:ferme)/,'ferme'],
+ [/(?:ciel|dans les airs)/,'ciel'],
+ [/(?:dans l eau|sous l eau|dans la mer|ocean|aquatique|nager|nage|dans un lac)/,'eau'],
+ [/(?:existe|exister|vrai(?:e)?|reel(?:le)?|imaginaire|invente|fiction|realite|vie reelle|pour de vrai|en vrai)/,'existence'],
+ [/(?:souvent|courant|commun|habituellement|generalement|d habitude|facilement|normalement).{0,55}(?:maison|chez|domicile)|(?:maison|chez|domicile).{0,55}(?:souvent|courant|commun|habituellement|generalement|d habitude|facilement|normalement)/,'frequent_maison'],
+ [/(?:meubles?|mobilier|ameublement)/,'meuble'],
+ [/(?:pour s asseoir|s asseoir sur|on peut s asseoir)/,'asseoir'],
+ [/(?:pour boire|sert a boire|boire avec)/,'boire'],
+ [/(?:pour dormir|dormir dedans|on dort sur)/,'dormir'],
+ [/(?:pour nettoyer|faire le menage|nettoyage|sert a nettoyer)/,'nettoyage'],
+ [/(?:ecrir|ecri|dessin|pour tracer)/,'ecriture'],
+ [/(?:lire|lecture)/,'lecture'],
+ [/(?:ranger|rangement|pour transporter des affaires)/,'rangement'],
+ [/(?:mesur|mesure)/,'mesure'],
+ [/(?:hygiene|se laver|se brosser|se nettoyer|pour laver)/,'hygiene'],
+ [/(?:faire du bruit|fais du bruit|fait du bruit|crier|crie|miauler|miaule|aboyer|aboie|chanter|chante|sonore)/,'bruit'],
+ [/(?:viande|carnivore|autres animaux)/,'viande'],
+ [/(?:insectes?|insectivore)/,'insecte'],
+ [/(?:des plantes|de l herbe|des feuilles|herbivore)/,'herbe_or_plante'],
+ [/(?:en |de |du |avec |compose de |fait en |fabrique en )(?:chocolat|papier|bois|metal|plastique|tissu|verre|carton|laine)\b/,'material'],
+ [/(?:peut on te manger|on peut te manger|tu se manges|ca se mange|comestible|mangeable|nourriture|aliment|a manger)/,'mangeable'],
+ [/(?:faire de la magie|magique|pouvoir magique)/,'imaginaire'],
+ [/(?:animaux|animal|bete)/,'animal'],
+ [/(?:objet|accessoire|chose materielle)/,'objet'],
+ [/(?:vivant|vivante|en vie)/,'vivant'],
+ [/(?:voler|vole|volant|voles|ailes)/,'volant'],
+ [/(?:dans une maison|dans la maison|a la maison|chez moi|chez nous|dans mon appartement|dans un appartement|a l interieur)/,'maison'],
+ [/(?:dehors|exterieur|plein air|dans la rue)/,'dehors'],
+ [/(?:poils|fourrure|pelage)/,'poils'],
+ [/(?:plumes)/,'plumes'],
+ [/(?:quatre pattes|4 pattes)/,'quatre'],
+ [/(?:petit|petite|minuscule)/,'petit'],
+ [/(?:grand|grande|enorme|geant)/,'grand'],
+ [/\brouge\b/,'rouge'],[/\bvert(?:e)?\b/,'vert'],[/\bblanc(?:he)?\b/,'blanc'],[/\bnoir(?:e)?\b/,'noir'],[/\borange\b/,'orange'],[/\bjaune\b/,'jaune'],[/\b(?:marron|brun|brune)\b/,'brun'],[/\bgris(?:e)?\b/,'gris'],
+ [/(?:doux|douce|mou|molle)/,'doux'],[/(?:rond|ronde)/,'rond'],
+ [/(?:electrique|electricite|pile|batterie)/,'electrique'],
+ [/(?:vetement|porter sur soi|porter comme un habit)/,'vetement'],[/(?:jouet|jouer avec)/,'jouet'],
+ [/(?:hiver|hivernal)/,'hiver'],[/(?:decoration|decorer|decore)/,'decoration'],
+ [/(?:fait peur|effrayant|effrayante)/,'peur'],
+ [/(?:lumiere|lumineux|brille|eclairer)/,'lumineux'],[/(?:chaud|chaude|chaleur)/,'chaud'],[/(?:froid|froide)/,'froid'],
+ [/(?:sucre|sucree|sucrerie)/,'sucre'],[/(?:transport|roues|conduire)/,'transporte'],
+ [/(?:sport|sportif|sportive)/,'sport'],[/(?:domestique|animal de compagnie)/,'domestique'],[/(?:sauvage)/,'sauvage'],
+ [/(?:noel|pere noel)/,'noel'],[/(?:halloween)/,'halloween'],[/(?:paques)/,'paques'],[/(?:ete|vacances d ete)/,'ete'],
+ [/(?:nuit|nocturne)/,'nuit'],[/(?:papier|pages)/,'papier'],[/(?:tissu)/,'tissu'],
+ [/(?:lait)/,'lait'],[/(?:plante|vegetal|arbre)/,'plante'],[/(?:metal|metallique|fer)/,'metal'],[/(?:bois)/,'bois'],[/(?:plastique)/,'plastique'],
+ [/(?:en verre|verrerie)/,'verre'],[/(?:en carton)/,'carton']
+];
+
+
+function classify(q){
+ const s=norm(q);
+ if(!s)return {kind:'unclear'};
+ const stripArticle=x=>x.replace(/^(?:un|une|le|la|les|l|des|du|de la|des)\s+/, '').trim();
+ // Remove the conversational beginning, but accept short bare guesses too.
+ const prefixes=[
+  /^(?:est ce que tu es|est ce que c est|est ce que ce serait|est ce que tu serais|est ce que c est un|est ce que c est une|est ce un|est ce une|tu es|es tu|c est|ce serait|serais tu|serait ce|je pense que c est|je pense a|je crois que c est|il s agit d un|il s agit d une|s agit il d un|s agit il d une)\s+/,
+  /^(?:est ce que tu es quelque chose comme|est ce que c est quelque chose comme)\s+/
+ ];
+ let t=s;
+ for(const prefix of prefixes){if(prefix.test(t)){t=t.replace(prefix,'');break}}
+ t=t.replace(/\s+(?:ou pas|par hasard|peut etre|je crois)$/,'').trim();
+ const guess=stripArticle(t);
+ // Avoid mistaking categories / traits for guesses. Exact word aliases are preferred.
+ const found=W.find(w=>w.aliases.some(a=>stripArticle(norm(a))===guess));
+ if(found)return {kind:'guess',word:found};
+ // Common noun guess not in the secret-word database can safely be answered "Non".
+ // This won't imply the unrecognized noun exists in our list.
+ const isShortGuess=/^(?:(?:un|une|le|la|les|des)\s+)?[a-z]+(?:\s+(?:a|de|du|des|en|d|a la|a l|a un|a une)\s+[a-z]+){0,2}$/.test(t);
+ const guessPrefix=/^(?:est ce que tu es|est ce que c est|tu es|es tu|c est|serais tu|je pense que c est|je crois que c est)\b/.test(s);
+ // A noun guess is "tu es une table ?"; "tu es un animal ?" is a category question.
+ const knownCategories=new Set(['animal','animaux','objet','meuble','plante','vetement','jouet','personnage','etre vivant','chose vivante','couleur','fruit','legume','oiseau','insecte']);
+ if(!knownCategories.has(guess) && isShortGuess && (guessPrefix||/^(?:un|une|le|la|les|des)\s+/.test(s)) && !/^(?:un|une)\s+(?:peu|grand|petit|animal|objet|meuble|jouet|aliment|etre|personnage|plante|oiseau|insecte)$/.test(t)){
+  return {kind:'otherGuess',noun:guess};
+ }
+ const match=rules.find(([re])=>re.test(s));
+ if(!match)return {kind:'unclear'};
+ return {kind:'property',key:match[1],s};
+}
+function answer(q){
+ const p=classify(q);
+ if(p.kind==='guess')return p.word===secret?['OUI ! 🎉 Tu as trouvé le mot !',true,false]:['Non, ce n’est pas '+p.word.word+'.',false,false];
+ if(p.kind==='otherGuess')return ['Non, ce n’est pas ça. ❌',false,false];
+ if(p.kind==='unclear')return ['Je n’ai pas bien compris. Essaie de demander autrement, par exemple « Tu es un meuble ? » ou « On te trouve dans la salle de bain ? »',false,true];
+ const {s,key}=p;
+ let tag=key;
+ if(key==='material'){
+  tag=['chocolat','papier','bois','metal','plastique','tissu','verre','carton','laine'].find(x=>new RegExp('\\b'+x+'\\b').test(s));
+  if(!tag)return ['Précise la matière : bois, métal, plastique, papier, tissu, verre ou chocolat.',false,true];
+ }
+ // Is it real? versus Is it imaginary?
+ let yes=key==='existence'?!secret.tags.has('imaginaire'):secret.tags.has(tag);
+ if(key==='existence' && /\b(imaginaire|fiction|invente)\b/.test(s))yes=!yes;
+ if(key==='herbe_or_plante')yes=secret.tags.has('herbe')||secret.tags.has('plante');
+ if(key==='meuble')yes=secret.tags.has('meuble');
+ if(key==='salle_de_bain')yes=secret.tags.has('salle_de_bain');
+ if(key==='frequent_maison')yes=secret.tags.has('frequent_maison');
+ if(key==='mangeable')yes=secret.tags.has('mangeable');
+ // Negated yes/no questions: « tu n'es pas ... ? » / « sans ... ? ».
+ if(key!=='existence' && /\b(ne|n)\b.{0,45}\bpas\b|\bsans\b/.test(s))yes=!yes;
+ return [yes?'Oui ! ✅':'Non ! ❌',false,false];
+}
+
+let busy=false,gameSequence=0,history=[];
+let accessCode = sessionStorage.getItem('devine_access_code') || '';
+function getAccessCode(){
+ if(!accessCode){
+  const given=window.prompt('🔐 Code d’accès du jeu (défini dans ton hébergement) :');
+  if(given===null)return null;
+  accessCode=given.trim();
+  if(!accessCode)return null;
+  sessionStorage.setItem('devine_access_code', accessCode);
+ }
+ return accessCode;
+}
+const aiEnabled=()=>$('#aiMode').checked&&!$('#aiMode').disabled;
+function finishAnswer(q,msg,win,unclear,topic){
+ say('Le mystère',msg);
+ if(!unclear){
+  askedQuestions.add(norm(q));
+  latestTopic=topic||'start';latestYes=/^oui/i.test(msg);spent++;
+  if(win){end(true);return}
+  if(spent>=MAX){say('Le mystère','Tu as utilisé tes 20 questions. Le mot était '+secret.word+' !');end(false);return}
+ }
+ update();renderSuggestions();
+}
+async function ask(raw){
+ if(finished||busy)return;
+ const q=raw.trim();if(!q)return;
+ say('Moi',q);
+ if(aiEnabled()){
+  const code = getAccessCode();
+  if(code===null){say('Le mystère','Le code d’accès est nécessaire pour activer le mode IA.');return}
+  busy=true;$('#question').disabled=true;$('#send').disabled=true;
+  const sequence=gameSequence;
+  try{
+   const resp=await fetch('/api/ask',{method:'POST',headers:{'Content-Type':'application/json','X-Game-Code':code},body:JSON.stringify({secret:secret.word,theme:$('#theme').value,question:q,history:history.slice(-12)})});
+   const data=await resp.json();if(!resp.ok){
+    if(resp.status===401){accessCode='';sessionStorage.removeItem('devine_access_code');$('#aiStatus').textContent='Code incorrect. Réessaie à la prochaine question.';$('#aiStatus').className='ai-status error'}
+    throw Error(data.error||'Erreur de connexion');
+   }
+   if(sequence!==gameSequence)return;
+   const category=typeof data.topic==='string'?data.topic:'start';
+   const msg=data.kind==='guess'?(data.yes?'OUI ! 🎉 Tu as trouvé le mot !':'Non, ce n’est pas ça. ❌'):
+      data.kind==='unclear'?'Je ne suis pas sûr de comprendre. Peux-tu reformuler ?':
+      data.yes?'Oui ! ✅':'Non ! ❌';
+   history.push({q,a:msg});finishAnswer(q,msg,data.kind==='guess'&&data.yes,data.kind==='unclear',category);
+  }catch(e){
+   if(sequence!==gameSequence)return;
+   const [msg,win,unclear]=answer(q);
+   const parsed=classify(q);
+   history.push({q,a:msg});
+   finishAnswer(q,msg,win,unclear,parsed.kind==='property'?parsed.key:'start');
+   $('#aiStatus').textContent='IA indisponible, mode classique utilisé.';
+   $('#aiStatus').className='ai-status error';
+  }finally{busy=false;if(sequence===gameSequence){update();$('#question').focus()}}
+ }else{
+  const [msg,win,unclear]=answer(q);const parsed=classify(q);
+  history.push({q,a:msg});finishAnswer(q,msg,win,unclear,parsed.kind==='property'?parsed.key:'start');
+ }
+}
+$('#questionForm').addEventListener('submit',e=>{e.preventDefault();const s=$('#question').value;$('#question').value='';ask(s);});
+$('#new').onclick=()=>{gameSequence++;history=[];busy=false;newGame()};
+$('#theme').onchange=()=>{gameSequence++;history=[];busy=false;document.body.dataset.theme=$('#theme').value;newGame()};document.body.dataset.theme=$('#theme').value;
+async function checkAI(){
+ try{
+  const res=await fetch('/api/status',{cache:'no-store'});
+  const data=await res.json();if(!res.ok||!data.ready)throw Error('not ready');
+  $('#aiMode').disabled=false;$('#aiMode').checked=true;
+  $('#aiStatus').textContent='IA connectée : questions libres';$('#aiStatus').className='ai-status online';
+ }catch(_){
+  $('#aiMode').disabled=true;$('#aiMode').checked=false;
+  $('#aiStatus').textContent='Mode classique. Le mode IA doit être activé sur le site hébergé.';
+  $('#aiStatus').className='ai-status';
+ }
+}
+checkAI();
+$('#hint').onclick=()=>{if(finished||busy||spent>=MAX)return;const h=hints++;spent++;say('Moi','Je voudrais un indice !');say('Le mystère',h===0?'🔎 Indice : '+(secret.tags.has('animal')?'C’est un animal.':secret.tags.has('imaginaire')?'C’est un personnage ou une créature imaginaire.':secret.tags.has('vivant')?'C’est quelque chose de vivant.':'Ce n’est pas un animal.'):'💡 Indice : '+secret.hints);if(spent>=MAX){say('Le mystère','Fin des 20 questions ! Le mot était '+secret.word+'.');end(false)}else update();renderSuggestions()};
+$('#reveal').onclick=()=>{if(finished||busy)return;say('Le mystère','Le mot était '+secret.word+' !');end(false)};
+const suggestions={
+ salle_de_bain:['Est-ce que tu es un meuble ?','Est-ce que tu es en plastique ?','Est-ce que tu es électrique ?','Est-ce qu’on t’utilise pour se laver ?','Est-ce que tu es petit ?','Est-ce que tu es en verre ?'],
+ meuble:['Est-ce qu’on te trouve dans le salon ?','Est-ce qu’on te trouve dans une chambre ?','Est-ce que tu es en bois ?','Est-ce que tu es grand ?','Est-ce qu’on peut s’asseoir sur toi ?'],
+ salon:['Est-ce que tu es un meuble ?','Est-ce que tu es électrique ?','Est-ce que tu es en tissu ?','Est-ce que tu es grand ?'],
+ chambre:['Est-ce que tu es un meuble ?','Est-ce que tu es doux ?','Est-ce que tu es en bois ?','Est-ce que tu es petit ?'],
+ start:['Est-ce que tu existes vraiment ?','Est-ce que tu es un animal ?','Est-ce que tu es vivant ?','Est-ce qu’on te trouve souvent dans une maison ?','Est-ce qu’on te trouve à l’école ?','Est-ce que tu es petit ?','Est-ce qu’on peut te manger ?','Est-ce que tu vis dehors ?'],
+ existence:['Est-ce que tu es un animal ?','Est-ce que tu es vivant ?','Est-ce qu’on te trouve souvent dans une maison ?','Est-ce que tu fais peur ?','Est-ce que tu es petit ?','Est-ce que tu peux voler ?'],
+ animal:['Est-ce que tu es domestique ?','Est-ce que tu es sauvage ?','Est-ce que tu as quatre pattes ?','Est-ce que tu as des poils ?','Est-ce que tu as des ailes ?','Est-ce que tu vis dans l’eau ?','Est-ce que tu manges de la viande ?','Est-ce que tu es grand ?'],
+ vivant:['Est-ce que tu es un animal ?','Est-ce que tu es une plante ?','Est-ce que tu vis dehors ?','Est-ce que tu vis dans l’eau ?','Est-ce que tu es petit ?','Est-ce que tu as des poils ?'],
+ frequent_maison:['Est-ce qu’on te trouve dans la cuisine ?','Est-ce qu’on te trouve à l’école ?','Est-ce que tu es électrique ?','Est-ce que tu es en plastique ?','Est-ce qu’on peut te manger ?','Est-ce que tu es un objet ?'],
+ maison:['Est-ce qu’on te trouve souvent dans une maison ?','Est-ce qu’on te trouve dans la cuisine ?','Est-ce que tu es électrique ?','Est-ce que tu sers à nettoyer ?','Est-ce que tu es en bois ?'],
+ ecole:['Est-ce qu’on t’utilise pour écrire ?','Est-ce que tu es en papier ?','Est-ce que tu es en plastique ?','Est-ce que tu es petit ?','Est-ce qu’on te trouve souvent dans une maison ?'],
+ cuisine:['Est-ce qu’on peut te manger ?','Est-ce que tu es en métal ?','Est-ce que tu es électrique ?','Est-ce que tu sers à nettoyer ?','Est-ce qu’on te trouve souvent dans une maison ?'],
+ dehors:['Est-ce que tu vis dans la forêt ?','Est-ce que tu vis dans le jardin ?','Est-ce que tu peux voler ?','Est-ce que tu es grand ?','Est-ce que tu es un animal ?'],
+ eau:['Est-ce que tu es un animal ?','Est-ce que tu es grand ?','Est-ce que tu es sauvage ?','Est-ce que tu as quatre pattes ?','Est-ce que tu es gris ?'],
+ volant:['Est-ce que tu as des plumes ?','Est-ce que tu es un animal ?','Est-ce que tu vis dehors ?','Est-ce que tu es petit ?','Est-ce que tu es noir ?'],
+ mangeable:['Est-ce que tu es sucré ?','Est-ce que tu es en chocolat ?','Est-ce que tu es petit ?','Est-ce que tu es orange ?','Est-ce qu’on te trouve dans la cuisine ?'],
+ material:['Est-ce que tu es électrique ?','Est-ce que tu es petit ?','Est-ce que tu es rond ?','Est-ce qu’on te trouve à l’école ?','Est-ce qu’on t’utilise pour écrire ?'],
+ ecriture:['Est-ce que tu es en bois ?','Est-ce que tu es en plastique ?','Est-ce qu’on te trouve à l’école ?','Est-ce que tu es petit ?'],
+ bruit:['Est-ce que tu es un animal ?','Est-ce que tu es électrique ?','Est-ce que tu es domestique ?','Est-ce que tu vis dehors ?'],
+ viande:['Est-ce que tu manges des plantes ?','Est-ce que tu es sauvage ?','Est-ce que tu es domestique ?','Est-ce que tu as quatre pattes ?'],
+ herbe_or_plante:['Est-ce que tu es un animal ?','Est-ce que tu vis à la ferme ?','Est-ce que tu es grand ?','Est-ce que tu as quatre pattes ?'],
+ petit:['Est-ce que tu es rond ?','Est-ce que tu es un animal ?','Est-ce qu’on te trouve dans une maison ?','Est-ce que tu es jaune ?','Est-ce que tu peux voler ?'],
+ grand:['Est-ce que tu es un animal ?','Est-ce que tu vis dehors ?','Est-ce que tu es sauvage ?','Est-ce que tu as quatre pattes ?'],
+ electrique:['Est-ce que tu fais du bruit ?','Est-ce qu’on te trouve dans une maison ?','Est-ce que tu fais de la lumière ?','Est-ce que tu es en plastique ?'],
+ imaginaire:['Est-ce que tu fais peur ?','Est-ce que tu peux voler ?','Est-ce que tu es un animal ?','Est-ce que tu fais de la magie ?'],
+ color:['Est-ce que tu es petit ?','Est-ce que tu es rond ?','Est-ce que tu es un animal ?','Est-ce qu’on te trouve dehors ?']
+};
+const general=['Est-ce qu’on te trouve dans la salle de bain ?','Est-ce que tu es un meuble ?','Est-ce que tu existes vraiment ?','Est-ce que tu es un animal ?','Est-ce que tu es vivant ?','Est-ce qu’on te trouve souvent dans une maison ?','Est-ce qu’on te trouve à l’école ?','Est-ce que tu es petit ?','Est-ce que tu es rond ?','Est-ce que tu peux voler ?','Est-ce que tu es en bois ?','Est-ce que tu fais du bruit ?','Est-ce qu’on peut te manger ?','Est-ce que tu es électrique ?','Est-ce que tu es jaune ?','Est-ce que tu es une décoration ?'];
+function renderSuggestions(){
+ const container=$('#examples');container.replaceChildren();
+ if(finished){const note=document.createElement('p');note.className='muted';note.textContent='🎉 Nouvelle partie pour découvrir d’autres questions !';container.append(note);return}
+ let topic=latestTopic;
+ if(['rouge','vert','blanc','noir','orange','jaune','brun','gris'].includes(topic))topic='color';
+ if(['bois','metal','papier','plastique','tissu'].includes(topic))topic='material';
+ const prefer=suggestions[topic]||suggestions.start;
+ const ordered=[...prefer,...general];const unique=[];
+ for(const q of ordered){const key=norm(q);if(!askedQuestions.has(key)&&!unique.some(x=>norm(x)===key))unique.push(q)}
+ const total=Math.min(10,unique.length);
+ for(const q of unique.slice(0,total)){
+  const btn=document.createElement('button');btn.className='chip';btn.type='button';btn.textContent=q;
+  btn.addEventListener('click',()=>{if(!finished){$('#question').value=q;$('#question').focus()}});
+  container.append(btn);
+ }
+ if(!total){const note=document.createElement('p');note.className='muted';note.textContent='Écris ta propre question pour continuer !';container.append(note)}
+}
+newGame();
+</script>
+</body>
+</html>
